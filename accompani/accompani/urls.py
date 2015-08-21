@@ -2,9 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'accompani.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
-    url(r'^admin/', include(admin.site.urls)),
-)
+                       url(r'^accompani/calendar/', include('accompani_calendar.urls')),
+                       url(r'^accompani/admin/', include(admin.site.urls)),
+                       )
