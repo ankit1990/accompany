@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'accompani_calendar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
