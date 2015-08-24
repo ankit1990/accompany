@@ -6,14 +6,28 @@
   <script src='{% static "fullcalendar/lib/jquery.min.js" %}'></script>
   <script src='{% static "fullcalendar/lib/moment.min.js" %}'></script>
   <script src='{% static "fullcalendar/fullcalendar.js" %}'></script>
+  <script src='{% static "fullcalendar/gcal.js" %}'></script>
   <script>
     $(document).ready(function() {
 
       // page is now ready, initialize the calendar...
+      $('#calendar').fullCalendar();
 
-      $('#calendar').fullCalendar({
-        // put your options and callbacks here
-      })
+
+      $.ajax({
+          url : "{% url 'list_events' %}",
+          data : {
+              'start' : $("#calendar").fullCalendar('getView').start.format(),
+          },
+          success: function(response) {
+              if (response['should_refresh']) {
+                  window.location.href = "{% url 'index' %}";
+              } else {
+                  event_data = response['data']
+                  $('#calendar').fullCalendar('addEventSource', event_data);
+              }
+          },
+      });
   });
   </script>
 </head>
