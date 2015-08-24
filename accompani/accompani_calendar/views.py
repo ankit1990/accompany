@@ -31,7 +31,6 @@ FLOW = flow_from_clientsecrets(
 
 # Index/main page for the app.
 def index(request):
-    # Main page of the calendar app.
     if CREDENTIAL in request.session:
         credential = request.session[CREDENTIAL]
     else:
@@ -78,7 +77,6 @@ def do_auth():
 
 # Oauth callback URL.
 def auth_return(request):
-    # Oauth callback end point.
     credential = FLOW.step2_exchange(request.REQUEST)
     request.session[CREDENTIAL] = credential
     return HttpResponseRedirect(reverse_lazy('index'))
