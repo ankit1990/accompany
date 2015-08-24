@@ -58,11 +58,9 @@ def fetch_list(request):
         timeMin = datetime.strptime(start_date, '%Y-%m-%d').isoformat() + 'Z'
         eventResults = service.events().list(calendarId='primary', singleEvents=True, timeMin=timeMin, orderBy='startTime').execute()
 
-        events = eventResults.get('items', [])
-
         response_data = {}
         response_data['should_refresh'] = False
-        response_data['data'] = events
+        response_data['data'] = eventResults
 
     except AccessTokenRefreshError:
         response_data = {};
