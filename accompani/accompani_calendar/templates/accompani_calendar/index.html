@@ -9,13 +9,8 @@
   <script src='{% static "fullcalendar/gcal.js" %}'></script>
   <script src='{% static "js/accompani.js" %}'></script>
   <script>
-    $(document).ready(function() {
-
-      // page is now ready, initialize the calendar...
-      $('#calendar').fullCalendar();
-
-
-      $.ajax({
+    function fetch_event_list() {
+         $.ajax({
           url : "{% url 'list_events' %}",
           data : {
               'start' : $("#calendar").fullCalendar('getView').start.format(),
@@ -25,10 +20,25 @@
                   window.location.href = "{% url 'index' %}";
               } else {
                   event_data = response['data']
+                  $("#calendar").fullCalendar('removeEvents');
                   $('#calendar').fullCalendar('addEventSource', parseGCalFeed(event_data));
               }
           },
       });
+    }
+
+    $(document).ready(function() {
+      setInterval(function() {
+          fetch_event_list()
+      }, 5000);
+    });
+
+    $(document).ready(function() {
+
+      // page is now ready, initialize the calendar...
+      $('#calendar').fullCalendar();
+
+      fetch_event_list();
   });
   </script>
 </head>
