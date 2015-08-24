@@ -39,14 +39,6 @@ def index(request):
     if credential is None or credential.invalid:
         return do_auth()
     else:
-        try:
-            # Make sure that when the page is loaded, the session doesn't contain
-            # expired access token.
-            http = httplib2.Http()
-            http = credential.authorize(http)
-
-        except AccessTokenRefreshError:
-            return do_auth()
         return render(request, "accompani_calendar/index.html")
 
 
@@ -75,6 +67,8 @@ def fetch_list(request):
     except AccessTokenRefreshError:
         response_data = {};
         response_data['should_refresh'] = True
+        credential.invalid = True
+        request.session[CREDENTIAL] = credential
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
