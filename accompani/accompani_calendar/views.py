@@ -29,6 +29,7 @@ FLOW = flow_from_clientsecrets(
     redirect_uri='http://localhost:8000/accompani/calendar/oauthcallback/')
 
 
+# Index/main page for the app.
 def index(request):
     # Main page of the calendar app.
     if CREDENTIAL in request.session:
@@ -54,10 +55,8 @@ def fetch_list(request):
         http = httplib2.Http()
         http = credential.authorize(http)
         service = build("calendar", "v3", http=http)
-        # TODO(ankit): Worry about timezone issues later on?
         timeMin = datetime.strptime(start_date, '%Y-%m-%d').isoformat() + 'Z'
         eventResults = service.events().list(calendarId='primary', singleEvents=True, timeMin=timeMin, orderBy='startTime').execute()
-
         response_data = {}
         response_data['should_refresh'] = False
         response_data['data'] = eventResults
@@ -70,10 +69,14 @@ def fetch_list(request):
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+
+# Initiate the oauth flow.
 def do_auth():
     authorize_url = FLOW.step1_get_authorize_url()
     return HttpResponseRedirect(authorize_url)
 
+
+# Oauth callback URL.
 def auth_return(request):
     # Oauth callback end point.
     credential = FLOW.step2_exchange(request.REQUEST)

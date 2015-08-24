@@ -1,5 +1,6 @@
 /**
- Parses a Google calendar feed into 'full calendar' compatible events array.
+  Parses a Google calendar feed into 'full calendar' compatible events array.
+  Inspired from {@code gcal.js}
  **/
 function parseGCalFeed(data) {
 			var events = [];
@@ -12,12 +13,6 @@ function parseGCalFeed(data) {
 			else if (data.items) {
 				$.each(data.items, function(i, entry) {
 					var url = entry.htmlLink;
-
-					// make the URLs for each event show times in the correct timezone
-//					if (timezoneArg) {
-//						url = injectQsComponent(url, 'ctz=' + timezoneArg);
-//					}
-
 					events.push({
 						id: entry.id,
 						title: entry.summary,

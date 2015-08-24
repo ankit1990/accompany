@@ -28,13 +28,13 @@
     }
 
     $(document).ready(function() {
+    // Fetch results every 5000 ms!
       setInterval(function() {
           fetch_event_list()
       }, 5000);
     });
 
     $(document).ready(function() {
-
       // page is now ready, initialize the calendar...
       $('#calendar').fullCalendar();
 
